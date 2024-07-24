@@ -1,0 +1,149 @@
+<html>
+<head>
+    <title>Events manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function(){
+
+      if(localStorage.getItem("currentuser")==null)
+{
+  location.href="index2.html";
+  return;
+}
+
+      $("#btnlogout").click(function(){
+
+localStorage.removeItem("currentuser");
+  location.href="index2.html";
+
+})
+
+$("#btndashboardinflu").click(function(){
+    location.href="infl-dash.html";
+   })
+    })
+  </script>
+
+  <script>
+     var module=angular.module("mymodule",[]);
+        var controller=module.controller("mycontroller",function($scope,$http){
+       
+          let user=localStorage.getItem("currentuser");
+         // $scope.emaill=user;
+
+       
+          $scope.eventstable;
+            $scope.dofetchevents=function(){
+
+          //  let mail=$scope.emaill;
+            //alert(user);
+let url="fetch-events?user="+user;
+
+$http.get(url).then(done,fail);
+function done(resp){
+if(resp.data.length==0)
+{
+alert("No event");
+//return;(when we use this,the last value deleted was still showing on screen)
+}
+//alert(JSON.stringify(resp.data));
+$scope.eventstable=resp.data;
+
+}
+function fail(err){
+
+alert(err.message);
+  }  }
+
+  $scope.dodelete=function(delrid){
+
+    let url="delete-event?delrid="+delrid;
+    $http.get(url).then(done,fail);
+function done(res){
+
+  alert(res.data);
+$scope.dofetchevents();
+
+}
+function fail(err){
+
+alert(err.message);
+  }  
+  }
+        
+        })
+  </script>
+   <script>
+    function preventBack(){window.history.forward();}
+    setTimeout("preventBack()", 0);
+    window.onunload=function(){null};
+  </script>
+</head>
+<body ng-app="mymodule" ng-controller="mycontroller" ng-init="dofetchevents();" style="background-color: beige;">
+  
+  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top"   >
+    <div class="container-fluid" style="background-color: beige;">
+      <a class="navbar-brand" href="#">
+        <img src="pics/infl-marketing2.png" alt="Logo" width="50" height="50"  style="border-radius: 50%;float: left;">
+      &nbsp;&nbsp;&nbsp;&nbsp;  <div style="float: left;margin-left: 30px;margin-top: 10px;margin-bottom: 10px;font-size: 25px;font-weight: bold;">Confluence.com</div>
+      </a>
+      <div style="float: right;" >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
+          <li class="nav-item" style="margin-left: 5px;">
+            <button type="button" class="btn btn-dark" id="btndashboardinflu">Go to dashboard</button> 
+          </li>
+          <li class="nav-item" style="margin-left: 5px;">
+            <button type="button" class="btn btn-dark" id="btnlogout" onclick="preventBack();">Logout</button> 
+          </li></ul></div>
+       </div>
+  </nav>
+  
+  <div  style="background-color:beige;height:50px;margin-top: 85px;">
+       <center> <h1 style="color:rgb(0, 0, 0);line-height:50px ;font-weight: bold;">Manage events</h1></center>
+    </div>
+    <br>
+    <div class="container">
+        
+      <!--<div class="row">
+        <div class="col-md-5">
+      Email: 
+            <input type="email" class="form-control" ng-model="emaill">
+          </div>
+          <div class="col-md-4">
+            <br>
+            <button type="button" class="btn btn-dark" >Fetch</button>
+
+          </div>
+          </div>-->
+          
+          <table  class="table table-dark table-striped" border="1">
+<tr>
+    <th>Email id</th>
+    <th>Event</th>
+    <th>Date of event</th>
+    <th>Time of start</th>
+    <th>Venue</th>
+    <th>City</th>
+    <th> </th>
+</tr>
+<tr ng-repeat="obj in eventstable">
+    <td>{{obj.emailid}}</td>
+    <td>{{obj.events}}</td>
+    <td>{{obj.doe}}</td>
+    <td>{{obj.tos}}</td>
+    <td>{{obj.venue}}</td>
+    <td>{{obj.city}}</td>
+    <td><input type="button" value="Delete" ng-click="dodelete(obj.rid);" ></td>
+</tr>
+          </table>
+    </div>
+
+</body>
+</html>

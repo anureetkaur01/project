@@ -1,0 +1,377 @@
+<html>
+<head>
+    <title>Find Influencer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function(){
+    
+    if(localStorage.getItem("currentclient")==null)
+{
+  location.href="index2.html";
+  return;
+}
+
+let client=localStorage.getItem("currentclient");
+
+$("#btnlogoutclient").click(function(){
+
+localStorage.removeItem("currentclient");
+  location.href="index2.html";
+
+})
+$("#btndashboardclient").click(function(){
+  location.href="client-dash.html";
+})
+
+/*$("#btncontact").click(function(){
+
+  location.href="sendemailtoinfl.html";
+
+})*/
+
+    })
+  </script>   
+
+<script>
+     var module=angular.module("mymodule",[]);
+        var controller=module.controller("mycontroller",function($scope,$http){
+$scope.arraycities;
+$scope.arrayusersdetails;
+$scope.arrayusersdetailsmodal;
+$scope.nameslist;
+$scope.eventslist;
+let client=localStorage.getItem("currentclient");
+$scope.doshowcities=function(){
+
+   let url="show-cities";
+   $http.get(url).then(done,fail);
+   function done(arraycitiesall){
+   //alert(JSON.stringify(arraycitiesall.data));
+$scope.arraycities=arraycitiesall.data;     
+}
+function fail(err){
+alert(err.message);
+return;
+}
+
+}
+
+$scope.doshowcitiessome=function(){
+  //alert($scope.field);
+  let fieldselected=$scope.field;
+  //alert(fieldselected);
+  let url="show-cities-some?fieldselected="+fieldselected;
+   $http.get(url).then(done,fail);
+
+   function done(arraycitiessome){
+   
+   // alert(JSON.stringify(arraycitiessome.data));
+   $scope.arraycities=arraycitiessome.data;    
+
+}
+function fail(err){
+alert(err.message);
+  return;
+}
+
+}
+
+$scope.doshowusers=function(){
+ 
+    let cityselected=$scope.city;
+    let fieldselected=$scope.field;
+    let url="show-users?cityselected="+cityselected+"&fieldselected="+fieldselected;
+
+    $http.get(url).then(done,fail);
+    function done(arrayusers){
+        
+        //alert(JSON.stringify(arrayusers.data));
+$scope.arrayusersdetails=arrayusers.data;
+    }
+function fail(err){
+    alert(err.message);
+}
+}
+
+$scope.doshowusersbyname=function(){
+let usersname=$scope.name;
+    let url="show-users-by-name?usersname="+usersname;
+
+$http.get(url).then(done,fail);
+function done(arrayusers){
+    
+    //alert(JSON.stringify(arrayusers.data));
+   $scope.arrayusersdetails=arrayusers.data;
+}
+function fail(err){
+alert(err.message);
+}
+
+}
+
+$scope.doshowdetailsbyemail=function(emailreceived){
+    let url="show-details-by-email?emailreceived="+emailreceived;
+
+$http.get(url).then(done,fail);
+function done(arrayusers){
+    
+   //alert(JSON.stringify(arrayusers.data));
+   $scope.arrayusersdetailsmodal=arrayusers.data;
+}
+function fail(err){
+alert(err.message);
+}
+
+}
+
+$scope.dosuggestnames=function(){
+ 
+  let url="show-names-infl";
+  $http.get(url).then(done,fail);
+function done(arraynames){
+    
+   //alert(JSON.stringify(arraynames.data));
+   $scope.nameslist=arraynames.data;
+}
+function fail(err){
+alert(err.message);
+}
+
+}
+
+$scope.dosendmail=function(mailto){
+
+  
+let url="send-mail-connect-to-influ?mailto="+mailto+"&client="+client;
+
+$http.get(url).then(done,fail);
+function done(result){
+    
+   alert(JSON.stringify(result.data));
+  
+}
+function fail(err){
+alert(err.message);
+}
+
+}
+
+$scope.doshowevents=function(inflemail){
+  let url="show-events-infl-finder?inflemail="+inflemail;
+  $http.get(url).then(done,fail);
+function done(result){
+    if(result.data.length==0){
+      alert("No events found");
+      return;
+    }
+   
+$scope.eventslist=result.data;
+  
+}
+function fail(err){
+alert(err.message);
+}
+}
+
+        })
+</script>
+<script>
+  function preventBack(){window.history.forward();}
+  setTimeout("preventBack()", 0);
+  window.onunload=function(){null};
+</script>
+
+</head>
+<body ng-app="mymodule" ng-controller="mycontroller" ng-init="doshowcities();" style="background-color: beige;" >
+   
+  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top"   >
+    <div class="container-fluid" style="background-color: beige;">
+      <a class="navbar-brand" href="#">
+        <img src="pics/infl-marketing2.png" alt="Logo" width="50" height="50"  style="border-radius: 50%;float: left;">
+      &nbsp;&nbsp;&nbsp;&nbsp;  <div style="float: left;margin-left: 30px;margin-top: 10px;margin-bottom: 10px;font-size: 25px;font-weight: bold;">Confluence.com</div>
+      </a>
+      <div style="float: right;" >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
+          <li class="nav-item" style="margin-left: 5px;">
+            <button type="button" class="btn btn-dark" id="btndashboardclient">Go to dashboard</button> 
+          </li>
+          <li class="nav-item" style="margin-left: 5px;">
+            <button type="button" class="btn btn-dark" id="btnlogoutclient" onclick="preventBack();">Logout</button> 
+          </li></ul></div>
+       </div>
+  </nav>
+   
+    <div style="height: 50px;background-color: beige;color:rgb(0, 0, 0);font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;text-align: center;margin-top: 88px;"><h1 style="font-size: 40px;font-weight: bold;">Search Influencer</h1></div>
+    <br>
+<div class="container">
+
+<form class="row">
+
+    <div class="col-md-4">
+        <br>
+Field: <select ng-model="field" style="width: 250px;height: 37px;" ng-change="doshowcitiessome();" class="form-select">
+    <option value="Fashion" >Fashion</option>
+    <option value="Health & wellness">Health & wellness</option>
+    <option value="Food" >Food</option>
+    <option value="Lifestyle">Lifestyle</option>
+    <option value="Sports & fitness">Sports & fitness</option>
+    <option value="Travel">Travel</option>
+    <option value="Singer">Singer</option>
+    <option value="Dance">Dance</option>
+</select>
+    </div>
+    <div class="col-md-4" ><br>
+City:  
+<select ng-model="city" style="width:250px;height: 37px;" class="form-select">
+    <option  ng-repeat="obj in arraycities" value="{{obj.city}}">{{obj.city}}</option>
+</select>
+    </div>
+<div class="col-md-4" >
+    <br><br>
+    <button type="button" class="btn btn-dark" ng-click="doshowusers()" >Find user</button>
+
+</div>
+<br><br><br><br>
+<div class="col-md-3">
+Name: <input type="text" ng-model="name"  list="listnames" style="width:300px ;" ng-click="dosuggestnames();" class="form-control" />
+<datalist id="listnames" >
+<option ng-repeat="obj in nameslist">{{obj.name}}</option>
+</datalist>
+</div>
+<div class="col-md-3"><br>
+    <button type="button" class="btn btn-dark" ng-click="doshowusersbyname()" >Find by name</button>
+
+</div>
+</form>
+<br><br>
+
+<div class="row">
+<div class="col-md-3" ng-repeat="obj in arrayusersdetails">
+  <center>  <div class="card mt-5" style="width: 18rem;" >
+    <center>  <img src="uploads/{{obj.picpath}}" style="border-radius: 50%;margin-top: 5px;" height="50%" width="50%" ></center>
+      <center> <div class="card-body">
+          <h5 class="card-title">{{obj.name}}</h5>
+          <p class="card-text">{{obj.gender}}</p>
+          <p class="card-text" ><a href="{{obj.insta}}" target="_blank">Click to view Instagram</a></p>
+          <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#moreinfoModal" ng-click="doshowdetailsbyemail(obj.emailid);" >More information</button>
+        </div></center>
+      </div></center>
+</div>
+</div>
+
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="moreinfoModal"    tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Details:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" ng-repeat="object in arrayusersdetailsmodal" >
+           <div style="width: inherit;">  <img src="uploads/{{object.picpath}}" style="border-radius: 50%;margin-left: 10px;border:1px black solid;" height="30%" width="30%" >
+         <div style="float: right;text-align: justify;border-style:none;" >
+            <textarea  cols="35" rows="5" style="border-style: none;margin-right: 20px;" readonly>{{object.others}}</textarea>
+         </div>
+        </div>
+            <br>
+        <center>
+            <table width="100%" border="0" class="table">
+              <tr>  
+                <th >Name:</th>
+            <td >  {{object.name}}</td>
+              </tr>
+               <tr>
+                <th > Email id: </th>
+                <td > {{object.emailid}}</td>
+              </tr>
+              <tr>
+                <th > Mobile no: </th>
+                <td > {{object.contact}}</td>
+              </tr>
+              <tr>
+                <th > DOB: </th>
+                <td > {{object.dob}}</td>
+              </tr>
+              <tr>
+                <th > Address: </th>
+                <td > {{object.address}}</td>
+              </tr>
+              <tr>
+                <th > Fields </th>
+                <td > {{object.fields}}</td>
+              </tr>
+                <tr>
+                  <th >
+                    Instagram:
+                  </th>
+                  <td ><a href="{{object.insta}}" target="_blank">{{object.insta}}</a></td>
+                </tr> 
+                <tr>
+                  <th > Youtube: </th>
+                  <td > {{object.youtube}}</td>
+                </tr>
+                <tr>
+                  <th > Facebook: </th>
+                  <td > {{object.fb}}</td>
+                </tr>
+              
+            </table>
+            <br>
+            <button type="button" class="btn btn-outline-dark" id="btncontact" ng-click="dosendmail(object.emailid)">Contact me</button>
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#eventsModal" ng-click="doshowevents(object.emailid)">Show works</button>
+
+          </center>
+
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+<!--Events modal-->
+<div class="modal fade" id="eventsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Works:</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped table-hover" width="100%" >
+   <tr>
+    <th>Event</th>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Venue</th>
+    <th>City</th>
+   </tr>
+   <tr ng-repeat="obj in eventslist">
+  <td>{{obj.events}}</td>
+  <td>{{obj.doe}}</td>
+  <td>{{obj.tos}}</td>
+  <td>{{obj.venue}}</td>
+  <td>{{obj.city}}</td>
+  </tr>
+        </table>
+      </div>
+    <!--  <div class="modal-footer">
+   <center>  
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  </center>
+      </div>--->
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

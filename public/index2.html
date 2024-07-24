@@ -1,0 +1,432 @@
+<html>
+<head>
+    <title>Home page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+ 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<style>
+    li{
+        margin-top: 5px;
+    }
+    button:hover{
+      font-weight: bold;
+    }
+</style>
+
+<script>
+$(document).ready(function(){
+
+    $("#btnsignup").click(function(){
+        
+        let object={
+        type:"get",
+        url:"/signup-process",
+        data:{
+            txtmail:$("#txtmail").val(),
+            txtpwd:$("#txtpwd").val(),
+            type:$("#type").val()
+        }
+     }
+     $.ajax(object).done(function(resp){
+        alert(resp);
+     }).fail(function(err){
+        alert(err.message);
+     })
+
+    })
+
+    $("#txtmail").blur(function(){
+
+      const re=/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+if(re.test($(this).val())==false)
+{$("#emailspn").html("(Invalid email id)");
+}
+   else {$("#emailspn").html("(Valid email)");}
+   if($("#emailspn").html()=="(Valid email)" && $("#pwdspn").html()=="(Strong password)")
+    $("#btnsignup").prop("disabled",false);
+  else
+  $("#btnsignup").prop("disabled",true);
+    
+    })
+
+    $("#txtpwd").keydown(function(){
+
+      let p= /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+      if(p.test($(this).val())==false)
+      {$("#pwdspn").html("(Weak password)");
+      }
+      else {$("#pwdspn").html("(Strong password)");
+    } 
+      if($("#emailspn").html()=="(Valid email)" && $("#pwdspn").html()=="(Strong password)")
+    $("#btnsignup").prop("disabled",false);
+  else
+  $("#btnsignup").prop("disabled",true);
+    })
+
+    $("#eye").click(function () {
+               
+                $("#eye").mousedown(function () {
+                    $("#txtpwd").attr("type", "text");
+                    $("#eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                })
+                $("#eye").mouseup(function () {
+                    $("#txtpwd").attr("type", "password");
+                    $("#eye").removeClass("fa-eye-slash").addClass("fa-eye");
+                })
+
+            })
+
+    $("#btnlogin").click(function(){
+        
+    let obj={
+        type:"get",
+        url:"/login-process",
+        data:{
+            txtemail:$("#txtemail").val(),
+            txtPwd:$("#txtPwd").val(),
+        }
+    }
+    $.ajax(obj).done(function(array){
+      
+       if(array.length==0)
+      { $("#spn").html("Invalid credentials");
+      return;
+    }
+       
+            if(array[0].status==1)
+           { //$("#spn").html(array[0].utype);
+           alert(array[0].utype);
+           if(array[0].utype==="Influencer") 
+            { location.href="infl-dash.html";
+          localStorage.setItem("currentuser",$("#txtemail").val());          
+          }
+  else if(array[0].utype==="Collaborator")
+           { location.href="client-dash.html";
+           localStorage.setItem("currentclient",$("#txtemail").val());
+           }
+          }
+            else {
+              $("#spn").html("Blocked");
+              return;
+             } 
+        
+    }).fail(function(err){
+        alert(err.message);
+    })
+    })
+
+    $("#eye2").click(function () {
+               
+               $("#eye2").mousedown(function () {
+                   $("#txtPwd").attr("type", "text");
+                   $("#eye2").removeClass("fa-eye").addClass("fa-eye-slash");
+               })
+               $("#eye2").mouseup(function () {
+                   $("#txtPwd").attr("type", "password");
+                   $("#eye2").removeClass("fa-eye-slash").addClass("fa-eye");
+               })
+
+           })
+
+    $("#btnfp").click(function(){
+
+      let obj2={
+        type:"get",
+        url:"/login-fp-sendmail",
+        data:
+        {
+          txtemail:$("#txtemail").val()
+        }
+      }
+      $.ajax(obj2).done(function(resp){
+       
+        // alert(resp);
+        $("#spn").html(resp);
+       
+      })
+      .fail(function(err){
+        alert(err.message);
+      })
+
+
+    })
+
+})
+</script>
+<script>
+  function docheck(){
+    var num;
+num=prompt("Enter password");
+if(num==="Admin@1980")
+{
+  alert("Correct");
+  location.href="admin-dash.html";
+}
+else {
+  alert("Wrong");
+ // location.href="index2.html";
+  return;
+}
+  }
+</script>
+</head>
+<body style="background-color: beige;">
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top"   >
+        <div class="container-fluid" style="background-color: beige;">
+          <a class="navbar-brand" href="#">
+            <img src="pics/infl-marketing2.png" alt="Logo" width="50" height="50"  style="border-radius: 50%;float: left;">
+          &nbsp;&nbsp;&nbsp;&nbsp;  <div style="float: left;margin-left: 30px;margin-top: 10px;margin-bottom: 10px;font-size: 25px;font-weight: bold;">Confluence.com</div>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
+              <li class="nav-item">
+                <button type="button" class="btn btn-dark"  data-bs-toggle="modal" data-bs-target="#signupmodal" style="margin-right: 10px;background-color: beige;color: black;border-style: none;">Signup</button>
+
+              </li>
+              <li class="nav-item">
+                <button type="button" class="btn btn-dark"  data-bs-toggle="modal" data-bs-target="#loginmodal" style="margin-right: 10px;background-color: beige;color: black;border-style: none;">Login</button>
+
+              </li>
+              
+            <li class="nav-item" style="color:white;">
+                <button type="button" class="btn btn-dark" style="margin-right: 10px;background-color: beige;color: black;border-style: none;"><a href="#services"  style="text-decoration: none;color:inherit;">Our services</a></button>
+
+              </li>
+              <li class="nav-item" style="color:white;">
+                <button type="button" class="btn btn-dark" style="margin-right: 10px;background-color: beige;color: black;border-style: none;"><a href="#team"  style="text-decoration: none;color:inherit;">Our team</a></button>
+
+              </li>
+              <li class="nav-item" style="color:white;">
+                <button type="button" class="btn btn-dark" style="margin-right: 10px;background-color: beige;color: black;border-style: none;"><a href="#reach"  style="text-decoration: none;color:inherit;">Reach us</a></button>
+
+              </li> 
+              <li class="nav-item">
+                <button type="button" class="btn btn-dark"   style="margin-right: 10px;background-color: beige;color: black;border-style: none;" onclick="docheck();">Admin page</button>
+
+              </li>
+
+            </ul>
+            
+          </div>
+        </div>
+      </nav>
+
+      <div style="width: inherit;height: 630px;background-color:rgb(0, 0, 0);margin-top: 83px;">
+      <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active" style="background-image: url(pics/carousel9.png);height: 630px;background-size: contain;width: inherit;">
+            
+          </div>
+          <div class="carousel-item">
+            <img src="pics/meet greet2.jpeg" class="d-block w-100" style="height: 630px;background-size: contain;" >
+          </div>
+          <div class="carousel-item">
+            <img src="pics/Meet greet.jpeg" class="d-block w-100" style="height: 630px;background-size: contain;" >
+          </div>
+        </div>
+      </div></div><br>
+      <div id="services" style="background-color: beige;color:rgb(0, 0, 0);height: 45px;text-align: center;line-height: 47px;font-size:30px;font-weight: bold;margin-bottom: 2px;">
+        Our services
+      </div>
+      <br><br>
+    <div class="container">
+<div class="row">
+<div class="col-md-3">
+  <center>  <div class="card mt-3" style="width: 260px;height: 360px;border-style: none;background-color: beige;border-right: 1px black solid;border-radius: 0%;">
+       <center> <img src="pics/card2.jpeg" width="60%" height="50%" style="border-radius: 50%;height: 150px;"></center>
+        <div class="card-body" style="margin-top: 0px;text-align: right;">
+          <h5 class="card-title">Collaborations</h5>
+          <p class="card-text">
+            The platform fosters seamless collaborator-influencer interactions, allowing both parties to collaborate on sponsored content, product reviews and more. </p>
+        </div>
+      </div></center>
+</div>
+<div class="col-md-3">
+    <center> <div class="card mt-3" style="width: 260px;height: 360px;border-style: none;background-color: beige;border-right: 1px black solid;border-radius: 0%;">
+       <center> <img src="pics/card1.jpeg" width="60%" height="50%" style="border-radius: 50%;height: 150px;">
+    </center>
+        <div class="card-body" style="text-align: right;">
+          <h5 class="card-title">Meet&greet</h5>
+          <p class="card-text">
+            Host events for brands and influencers to network and engage with audiences.
+            Enhance brand loyalty and community building. </p>
+        </div>
+      </div></center>
+</div>
+<div class="col-md-3">
+  <center>  <div class="card mt-3" style="width: 260px;height: 360px;border-style: none;background-color: beige;border-right: 1px black solid;border-radius: 0%;">
+       <center> <img src="pics/card3.png" width="60%" height="50%" style="border-radius: 50%;height: 150px;"></center>
+        <div class="card-body" style="text-align: right;">
+          <h5 class="card-title">Find influencers</h5>
+          <p class="card-text">Use advanced algorithms to match brands with relevant influencers.
+            Ensure audience demographics align for maximum engagement. </p>
+        </div>
+      </div></center>
+</div>
+<div class="col-md-3">
+   <center> <div class="card mt-3" style="width:260px;height: 360px;border-style: none;background-color: beige;border-right: 1px black solid;border-radius: 0%;">
+       <center> <img src="pics/promotions.avif" width="60%" height="50%" style="border-radius: 50%;height: 150px;"></center>
+        <div class="card-body" style="text-align: right;">
+          <h5 class="card-title">Promotions</h5>
+          <p class="card-text">Helps brands and influencers amplify their reach with tools for tracking engagement, managing campaigns, and analyzing performance metrics for continuous improvement.</p>
+        </div>
+      </div></center>
+</div>
+</div>
+</div>
+<br><br>
+<div id="team"  style="background-color:beige;color:rgb(0, 0, 0);height: 45px;text-align: center;line-height: 47px;font-size: 30px;font-weight: bold;margin-bottom: 5px;border-top: 1px beige solid;">
+    Our team
+</div>
+<br><br>
+<div class="container">
+<div class="row">
+  <div class="col-md-6">
+    <center>
+      <div class="card mb-3" style="max-width: 540px;background-color: beige;border-style: none;border-radius: 0%;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="pics/rajesh sir.jpeg" class="img-fluid" style="margin-left:5px;border-style: none;border-radius: 50%;margin-top: 5px;">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body" style="text-align: left;">
+              <p class="card-text">Under the guidance of:</p>
+              <h3 class="card-title">Rajesh Bansal</h3>
+              <p class="card-text">(Author of "Real java")</p>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </center>
+    </div>
+    <div class="col-md-6">
+      <center>
+        <div class="card mb-3" style="max-width: 540px;background-color: beige;border-style: none;border-radius: 0%;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="pics/me.jpg" class="img-fluid" style="margin-left:5px;border-style: none;border-radius: 50%;margin-top: 5px;">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body" style="text-align: left;">
+                <p class="card-text">Developed by:</p>
+                <h3 class="card-title">Anureet kaur</h3>
+                <p class="card-text">(Pursuing B.Tech in Computer science & engineering)</p>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </center>
+      </div>
+</div>
+</div>
+<br><br>
+    <div id="reach" style="background-color: rgb(0, 0, 0);color:beige;height: 45px;text-align: center;line-height: 47px;font-size: 25px;font-weight: bold;margin-bottom: 5px;border-top: 1px beige solid;">
+        Reach us
+    </div>
+    <div style="height: 400px;width: inherit;">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3447.8805715959943!2d74.9497531755548!3d30.211955910614584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391732a4f07278a9%3A0x4a0d6293513f98ce!2sBanglore%20Computer%20Education!5e0!3m2!1sen!2sin!4v1721077907517!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div style="background-color: #000000;color:beige;height: 45px;text-align: center;line-height: 47px;font-size: 25px;font-weight: bold;margin-bottom: 5px;border-top: 1px white solid;">
+        Copyright
+    </div>
+    <div >
+<marquee >
+    All content is copyrighted. Unauthorized use is prohibited.
+
+</marquee>
+    </div>
+
+   
+
+<!--Signup Modal -->
+
+<div class="modal fade" id="signupmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+      <div class="modal-content" style="background-color: beige;border: 1px black solid;">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Signup: (Create account)</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <form action="">
+             Email id: <span id="emailspn" style="font-weight: bold;">*</span>
+             <input type="email" name="txtmail" id="txtmail" class="form-control" >
+         <br><br>
+         Password:  <span id="pwdspn" style="font-weight: bold;">*</span>
+         <div style="width: 100%;height: 40px;">
+          <input type="password" name="txtpwd" id="txtpwd" class="form-control" style="float: left;width: 85%;" >
+          <i class="fa-solid fa-eye" id="eye" style="font-size:25px;float: left;width:7%;margin-left:20px;margin-top: 4px;cursor: pointer;"></i>
+        </div>
+         <br><br>
+         <center>
+         Type: <select name="type" id="type" class="form-select" style="width:200px;">
+            
+            <option value="Influencer">Influencer</option>
+            <option value="Collaborator">Collaborator</option>
+
+         </select>
+         </center>
+         </form>
+        </div>
+        <div class="modal-footer">
+          
+          <button type="button" class="btn btn-dark" id="btnsignup" disabled>Sign up</button>
+         
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Login modal-->
+  <div class="modal fade" id="loginmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background-color: beige;border:1px black solid">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Login:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="">
+                Email id: <input type="email" name="txtemail" id="txtemail"  class="form-control">
+            <br><br>
+            Password: 
+            <div style="width:100%;height: 40px;">
+            <input type="password" name="txtPwd" id="txtPwd" class="form-control" style="width:85%;float: left;">
+            <i class="fa-solid fa-eye" id="eye2" style="font-size:25px;float: left;width:7%;margin-left:20px;margin-top: 4px;cursor: pointer;"></i>
+
+            </div>
+            <button type="button" class="btn btn-link"  style="float:right" id="btnfp" name="btnfp">Forgot password?</button>
+<br>
+            <br>
+         <center>  <span id="spn" style="color:rgb(0, 0, 0);font-weight: bold;">  </span></center>
+            </form>
+       <center>     <div>
+            Don't have an account? <input type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#signupmodal" value="Create one!" >
+       </div>
+      </center>
+      </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-dark" id="btnlogin">Login</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+   
+</body>
+</html>
