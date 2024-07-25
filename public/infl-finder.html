@@ -215,7 +215,7 @@ alert(err.message);
 
     <div class="col-md-4">
         <br>
-Field: <select ng-model="field" style="width: 90%;height: 50%;" ng-change="doshowcitiessome();" class="form-select">
+Field: <select ng-model="field" style="width: 90%;" ng-change="doshowcitiessome();" class="form-select">
     <option value="Fashion" >Fashion</option>
     <option value="Health & wellness">Health & wellness</option>
     <option value="Food" >Food</option>
@@ -228,7 +228,7 @@ Field: <select ng-model="field" style="width: 90%;height: 50%;" ng-change="dosho
     </div>
     <div class="col-md-4" ><br>
 City:  
-<select ng-model="city" style="width:90%;height: 50%;" class="form-select">
+<select ng-model="city" style="width:90%;height: 40%;" class="form-select">
     <option  ng-repeat="obj in arraycities" value="{{obj.city}}">{{obj.city}}</option>
 </select>
     </div>
