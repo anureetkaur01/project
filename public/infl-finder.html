@@ -277,14 +277,14 @@ Name: <input type="text" ng-model="name"  list="listnames" style="width:100% ;" 
         </div>
         <div class="modal-body" ng-repeat="object in arrayusersdetailsmodal" >
            <div style="width: inherit;height: 25%;"> 
-            <div style="height: 100%;width: 30%;"> <img src="uploads/{{object.picpath}}" style="border-radius: 50%;margin-left: 5px;border:1px black solid;width: 90%;height: 100%;"  ></div>
-         <div style="float: right;text-align: justify;border-style:none;height: inherit;width:60%;border: 1px black soild;" >
+            <div style="height: 100%;width: 30%;float: left;"> <img src="uploads/{{object.picpath}}" style="border-radius: 50%;margin-left: 5px;border:1px black solid;width: 90%;height: 100%;"  ></div>
+         <div style="float: left;text-align: justify;border-style:none;height: inherit;width:60%;border: 1px black soild;" >
             <textarea  cols="30" rows="5" style="border-style: none;" readonly>{{object.others}}</textarea>
          </div>
         </div>
             <br>
         <center>
-            <table width="100%" border="0" class="table">
+            <table width="100%" border="0" class="table" >
               <tr>  
                 <th >Name:</th>
             <td >  {{object.name}}</td>
