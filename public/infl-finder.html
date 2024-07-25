@@ -278,12 +278,13 @@ Name: <input type="text" ng-model="name"  list="listnames" style="width:100% ;" 
         <div class="modal-body" ng-repeat="object in arrayusersdetailsmodal" >
            <div style="width: inherit;height: 25%;"> 
             <div style="height: 100%;width: 30%;float: left;"> <img src="uploads/{{object.picpath}}" style="border-radius: 50%;margin-left: 5px;border:1px black solid;width: 90%;height: 100%;"  ></div>
-         <div style="float: left;text-align: justify;border-style:none;height: inherit;width:60%;border: 1px black soild;" >
-            <textarea  cols="30" rows="5" style="border-style: none;" readonly>{{object.others}}</textarea>
+         <div style="float: left;text-align: justify;border-style:none;height: inherit;width:60%;margin-left: 3px;" >
+            <textarea  cols="35" rows="5" style="border-style: none;" readonly>{{object.others}}</textarea>
          </div>
         </div>
             <br>
         <center>
+          <br>
             <table width="100%" border="0" class="table" >
               <tr>  
                 <th >Name:</th>
