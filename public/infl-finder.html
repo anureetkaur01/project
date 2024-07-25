@@ -187,7 +187,6 @@ alert(err.message);
   setTimeout("preventBack()", 0);
   window.onunload=function(){null};
 </script>
-
 </head>
 <body ng-app="mymodule" ng-controller="mycontroller" ng-init="doshowcities();" style="background-color: beige;" >
    
@@ -199,16 +198,16 @@ alert(err.message);
       </a>
       <div style="float: right;" >
         <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
-          <li class="nav-item" style="margin-left: 5px;">
+          <li class="nav-item" style="margin-left: 10px;">
             <button type="button" class="btn btn-dark" id="btndashboardclient">Go to dashboard</button> 
           </li>
-          <li class="nav-item" style="margin-left: 5px;">
+          <li class="nav-item" style="margin-left: 10px;">
             <button type="button" class="btn btn-dark" id="btnlogoutclient" onclick="preventBack();">Logout</button> 
           </li></ul></div>
        </div>
   </nav>
    
-    <div style="height: 50px;background-color: beige;color:rgb(0, 0, 0);font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;text-align: center;margin-top: 88px;"><h1 style="font-size: 40px;font-weight: bold;">Search Influencer</h1></div>
+    <div style="height: 50px;background-color: beige;color:rgb(0, 0, 0);font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;text-align: center;margin-top: 100px;"><h1 style="font-size: 40px;font-weight: bold;">Search Influencer</h1></div>
     <br>
 <div class="container">
 
@@ -216,7 +215,7 @@ alert(err.message);
 
     <div class="col-md-4">
         <br>
-Field: <select ng-model="field" style="width: 250px;height: 37px;" ng-change="doshowcitiessome();" class="form-select">
+Field: <select ng-model="field" style="width: 90%;height: 25%;" ng-change="doshowcitiessome();" class="form-select">
     <option value="Fashion" >Fashion</option>
     <option value="Health & wellness">Health & wellness</option>
     <option value="Food" >Food</option>
@@ -229,7 +228,7 @@ Field: <select ng-model="field" style="width: 250px;height: 37px;" ng-change="do
     </div>
     <div class="col-md-4" ><br>
 City:  
-<select ng-model="city" style="width:250px;height: 37px;" class="form-select">
+<select ng-model="city" style="width:90%;height: 25%;" class="form-select">
     <option  ng-repeat="obj in arraycities" value="{{obj.city}}">{{obj.city}}</option>
 </select>
     </div>
@@ -240,7 +239,7 @@ City:
 </div>
 <br><br><br><br>
 <div class="col-md-3">
-Name: <input type="text" ng-model="name"  list="listnames" style="width:300px ;" ng-click="dosuggestnames();" class="form-control" />
+Name: <input type="text" ng-model="name"  list="listnames" style="width:95% ;" ng-click="dosuggestnames();" class="form-control" />
 <datalist id="listnames" >
 <option ng-repeat="obj in nameslist">{{obj.name}}</option>
 </datalist>
