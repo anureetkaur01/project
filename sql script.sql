@@ -32,9 +32,10 @@ drop table iprofile;
 create table iprofile(emailid varchar(30) primary key,name varchar(30),gender varchar(15),dob date,address varchar(60),city varchar(20),contact bigint,fields varchar(100),insta varchar(50),fb varchar(50),youtube varchar(50),others varchar(200),picpath varchar(100));
 
 drop table events;
-create table events(rid int primary key auto_increment,emailid varchar(30),events varchar(50),doe date,tos time,city varchar(40),venue varchar(50));
+create table events(rid int primary key auto_increment,emailid varchar(30),events varchar(150),doe date,tos time,city varchar(100),venue varchar(150));
 
-create table cprofile(email varchar(30) primary key,name varchar(30),city varchar(40),state varchar(40),org varchar(50),mobile bigint);
+create table cprofile(email varchar(30) primary key,name varchar(30),city varchar(100),state varchar(100),org varchar(150),mobile bigint);
 select * from cprofile;
 delete from cprofile where email='undefined';
 drop table iprofile;
+drop table cprofile;
