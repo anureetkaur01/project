@@ -91,7 +91,10 @@ $scope.doshowusers=function(){
 
     $http.get(url).then(done,fail);
     function done(arrayusers){
-        
+        if(arrayusers.data.length==0){
+          alert("Not found");
+          return;
+        }
         //alert(JSON.stringify(arrayusers.data));
 $scope.arrayusersdetails=arrayusers.data;
     }
@@ -106,7 +109,10 @@ let usersname=$scope.name;
 
 $http.get(url).then(done,fail);
 function done(arrayusers){
-    
+    if(arrayusers.data.length==0){
+      alert("Not found");
+      return;
+    }
     //alert(JSON.stringify(arrayusers.data));
    $scope.arrayusersdetails=arrayusers.data;
 }
