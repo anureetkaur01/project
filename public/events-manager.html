@@ -136,7 +136,7 @@ alert(err.message);
 <tr ng-repeat="obj in eventstable">
     <td>{{obj.emailid}}</td>
     <td>{{obj.events}}</td>
-    <td>{{obj.doe}}</td>
+    <td>{{obj.doe.split("T")[0]}}</td>
     <td>{{obj.tos}}</td>
     <td>{{obj.venue}}</td>
     <td>{{obj.city}}</td>

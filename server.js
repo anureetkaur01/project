@@ -308,7 +308,7 @@ mysql.query("insert into iprofile values(?,?,?,?,?,?,?,?,?,?,?,?,?)",[req.body.t
 
 
 
-app.post("/update-process-infl-profile",function(req,resp){
+app.post("/update-process-infl-profile",async function(req,resp){
 
     let filename;
     let array=req.body.field;
@@ -329,6 +329,10 @@ app.post("/update-process-infl-profile",function(req,resp){
             console.log(filename);
             let path=__dirname+"/public/uploads/"+filename;
             req.files.pic.mv(path);
+
+            await cloudinary.uploader.upload(path).then(function(result){
+                filename=result.url;
+            })
        
             mysql.query("update iprofile set name=?,gender=?,dob=?,address=?,city=?,contact=?,fields=?,insta=?,fb=?,youtube=?,others=?,picpath=? where emailid=?",[req.body.txtname,req.body.gender,req.body.txtdate,req.body.txtaddress,req.body.txtcity,req.body.txtmob,str,req.body.txtinsta,req.body.txtfb,req.body.txtyt,req.body.txtinfo,filename,req.body.txtemailinflu],function(err,result){
                 if(err)
