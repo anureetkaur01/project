@@ -101,7 +101,8 @@ if(array.length==0)
   $("#btnupdate").prop("disabled",false);
    $("#txtname").val(array[0].name);
    $("#gender").val(array[0].gender);
-   $("#txtdate").val(array[0].dob);
+   //alert(array[0].dob);
+   $("#txtdate").val(array[0].dob.split("T")[0]);
    $("#txtaddress").val(array[0].address);
    $("#txtcity").val(array[0].city);
    $("#txtmob").val(array[0].contact);
@@ -109,7 +110,7 @@ if(array.length==0)
    $("#txtfb").val(array[0].fb);
    $("#txtyt").val(array[0].youtube);
    $("#txtinfo").val(array[0].others);
-   $("#imgprev").prop("src","uploads/"+array[0].picpath);
+   $("#imgprev").prop("src",array[0].picpath);
    $("#field").val(array[0].fields.split(","));
    
   /* let fields = array[0].fields.split(","); 

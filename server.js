@@ -3,6 +3,7 @@ var mysql2=require("mysql2");
 var fileuploader=require("express-fileupload");
 var nodemailer=require("nodemailer");
 const bodyParser = require("body-parser");
+var cloudinary=require("cloudinary").v2;
 
 let app=express();
 app.use(fileuploader());
@@ -24,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
     }
     */
 
-let config={
+/*let config={
     host:"be3ovxaynee5q5aosfxc-mysql.services.clever-cloud.com",
     user:"utyetjkhnxcegim8",
     password:"cOUmIBhsn9AcBCljzWC1",
@@ -33,13 +34,23 @@ let config={
             keepAliveInitialDelay:10000,
             enableKeepAlive:true
     }
+            */
+
+    cloudinary.config({ 
+        cloud_name: 'dodsiieyw', 
+        api_key: '415146712849637', 
+        api_secret: 'pZwXQu1CbJToLnxl-MAjwIdz__Q' 
+    })
+
+    let config="mysql://avnadmin:AVNS_eTr_9jRAnPJstqbDR7G@mysql-2237e28a-kanureet001-949d.e.aivencloud.com:22407/defaultdb"
+
     var mysql=mysql2.createConnection(config);
     mysql.connect(function(err){
         if(err)
             console.log(err.message);
         else console.log("Connected to database successfully...");
     
-    })
+    })  
 
 app.get("/",function(reqme,respme){
     let path=__dirname+"/public/index2.html";
@@ -243,15 +254,21 @@ else resp.send(result);
 
  })
 
-app.post("/submit-process-infl-profile",function(req,resp){
+app.post("/submit-process-infl-profile",async function(req,resp){
 
     let filename="";
+
     if(req.files!=null)
     {
         filename=req.files.pic.name;
         console.log(filename);
         let path=__dirname+"/public/uploads/"+filename;
         req.files.pic.mv(path);
+
+      await cloudinary.uploader.upload(path).then(function(result){
+        filename=result.url;
+      })
+
     }
     else{
         filename="no pic";
@@ -273,6 +290,9 @@ let str;
         } 
         else str=array;
        console.log(str);
+
+      //date wala issue(using aiven.io) reading time te aa riha because apa config ch iss site da common url paata,uss ch datestring true wali option nhi.
+
 mysql.query("insert into iprofile values(?,?,?,?,?,?,?,?,?,?,?,?,?)",[req.body.txtemailinflu,req.body.txtname,req.body.gender,req.body.txtdate,req.body.txtaddress,req.body.txtcity,req.body.txtmob,str,req.body.txtinsta,req.body.txtfb,req.body.txtyt,req.body.txtinfo,filename],function(err){
     
     if(err)
